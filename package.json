@@ -1,0 +1,19 @@
+{
+  "name": "megagecko-pool-fetcher",
+  "version": "1.0.0",
+  "description": "MegaGecko Pool Fetcher - Automated pool discovery and configuration generator for Solana DEXs using GeckoTerminal API",
+  "author": "MishaFYI <https://t.me/MishaFYI>",
+  "main": "fetchPools.ts",
+  "scripts": {
+    "fetch": "ts-node fetchPools.ts",
+    "fetch:json": "ts-node fetchPools.ts --json"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
