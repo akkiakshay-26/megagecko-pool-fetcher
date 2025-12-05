@@ -182,7 +182,7 @@ async function getPoolsByTokenAddress(tokenAddress: string): Promise<GeckoPool[]
 }
 
 /**
- * Filter pools to only include those with our target tokens
+ * Filter pools to only include those with our target tokens (pairs between target tokens)
  */
 function filterRelevantPools(pools: GeckoPool[]): GeckoPool[] {
     const targetAddresses = new Set(Object.values(TARGET_TOKENS).map(addr => addr.toLowerCase()));
@@ -199,6 +199,36 @@ function filterRelevantPools(pools: GeckoPool[]): GeckoPool[] {
         const hasQuote = targetAddresses.has(quoteAddr);
         
         return hasBase && hasQuote;
+    });
+}
+
+/**
+ * Filter pools to find USDC pools where the other token is NOT in target tokens
+ */
+function filterUSDCOnlyPools(pools: GeckoPool[]): GeckoPool[] {
+    const targetAddresses = new Set(Object.values(TARGET_TOKENS).map(addr => addr.toLowerCase()));
+    const usdcAddress = TARGET_TOKENS.USDC.toLowerCase();
+    
+    return pools.filter((pool) => {
+        if (!pool?.attributes?.base_token?.address || !pool?.attributes?.quote_token?.address) {
+            return false;
+        }
+        
+        const baseAddr = pool.attributes.base_token.address.toLowerCase();
+        const quoteAddr = pool.attributes.quote_token.address.toLowerCase();
+        
+        // Check if one token is USDC and the other is NOT in target tokens
+        const isBaseUSDC = baseAddr === usdcAddress;
+        const isQuoteUSDC = quoteAddr === usdcAddress;
+        
+        if (isBaseUSDC) {
+            return !targetAddresses.has(quoteAddr); // Other token is not in target list
+        }
+        if (isQuoteUSDC) {
+            return !targetAddresses.has(baseAddr); // Other token is not in target list
+        }
+        
+        return false;
     });
 }
 
@@ -328,23 +358,46 @@ async function main() {
         console.log(`Total unique pools: ${allPools.size}\n`);
     }
     
-    // Filter to only relevant pools (involving our target tokens)
+    // Filter to only relevant pools (involving our target tokens - pairs between target tokens)
     const relevantPools = filterRelevantPools(Array.from(allPools.values()));
     
     if (!jsonOnly) {
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        console.log(`✅ Found ${relevantPools.length} relevant pools (out of ${allPools.size} total)`);
+        console.log(`✅ Found ${relevantPools.length} target token pair pools (out of ${allPools.size} total)`);
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     }
     
-    // Filter by minimum liquidity ($1000) and volume ($1000)
+    // Filter target token pairs by minimum liquidity ($1000) and volume ($1000)
     const MIN_LIQUIDITY = 1000;
     const MIN_VOLUME_24H = 1000;
-    const filteredPools = filterByLiquidityAndVolume(relevantPools, MIN_LIQUIDITY, MIN_VOLUME_24H);
+    const filteredTargetPairs = filterByLiquidityAndVolume(relevantPools, MIN_LIQUIDITY, MIN_VOLUME_24H);
     
     if (!jsonOnly) {
-        console.log(`📊 Filtering pools: min liquidity $${MIN_LIQUIDITY.toLocaleString()}, min 24h volume $${MIN_VOLUME_24H.toLocaleString()}`);
-        console.log(`✅ ${filteredPools.length} pools passed filters (out of ${relevantPools.length} relevant pools)\n`);
+        console.log(`📊 Filtering target token pairs: min liquidity $${MIN_LIQUIDITY.toLocaleString()}, min 24h volume $${MIN_VOLUME_24H.toLocaleString()}`);
+        console.log(`✅ ${filteredTargetPairs.length} target token pair pools passed filters (out of ${relevantPools.length} relevant pools)\n`);
+    }
+    
+    // Find USDC-only pools (USDC paired with tokens NOT in target list)
+    const usdcOnlyPools = filterUSDCOnlyPools(Array.from(allPools.values()));
+    
+    if (!jsonOnly) {
+        console.log(`🔍 Found ${usdcOnlyPools.length} USDC pools with non-target tokens\n`);
+    }
+    
+    // Filter USDC-only pools by minimum liquidity ($1000) and volume ($100,000)
+    const MIN_VOLUME_24H_USDC_ONLY = 100000; // 100k minimum for USDC-only pools
+    const filteredUSDCOnlyPools = filterByLiquidityAndVolume(usdcOnlyPools, MIN_LIQUIDITY, MIN_VOLUME_24H_USDC_ONLY);
+    
+    if (!jsonOnly) {
+        console.log(`📊 Filtering USDC-only pools: min liquidity $${MIN_LIQUIDITY.toLocaleString()}, min 24h volume $${MIN_VOLUME_24H_USDC_ONLY.toLocaleString()}`);
+        console.log(`✅ ${filteredUSDCOnlyPools.length} USDC-only pools passed filters (out of ${usdcOnlyPools.length} USDC-only pools)\n`);
+    }
+    
+    // Combine both sets of pools
+    const filteredPools = [...filteredTargetPairs, ...filteredUSDCOnlyPools];
+    
+    if (!jsonOnly) {
+        console.log(`📊 Total filtered pools: ${filteredPools.length} (${filteredTargetPairs.length} target pairs + ${filteredUSDCOnlyPools.length} USDC-only)\n`);
     }
     
     // Group by pair
